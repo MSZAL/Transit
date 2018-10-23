@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Transit</string>
+    <string name="map">Map</string>
+    <string name="bus">Bus</string>
+    <string name="train">Train</string>
+    <string name="metra">Metra</string>
+    <string name="settings">Settings</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
