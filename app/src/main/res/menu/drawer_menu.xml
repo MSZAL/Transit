@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
     <item android:id="@+id/map" android:title="@string/map" android:icon="@drawable/ic_map_black_24dp"/>
     <item android:id="@+id/bus" android:title="@string/bus" android:icon="@drawable/ic_directions_bus_black_24dp"/>
     <item android:id="@+id/train" android:title="@string/train" android:icon="@drawable/ic_train_black_24dp"/>
     <item android:id="@+id/metra" android:title="@string/metra" android:icon="@drawable/ic_train_black_24dp"/>
-    <item android:id="@+id/settings" android:title="@string/settings" android:icon="@drawable/ic_settings_black_24dp"/>
+    </group>
+
 </menu>
