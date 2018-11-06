@@ -2,6 +2,7 @@ package csc472.depaul.edu.transit;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -80,7 +81,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBusSubmit(String s) {
         BusFragmentResult busFragmentResult = BusFragmentResult.newInstance(s);
-        getSupportFragmentManager().beginTransaction().replace(
-                R.id.fragment_container, busFragmentResult).commit();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, busFragmentResult);
+        fragmentTransaction.addToBackStack(null); // This lets the user hit the back button and go back for another search
+        fragmentTransaction.commit();
     }
 }
