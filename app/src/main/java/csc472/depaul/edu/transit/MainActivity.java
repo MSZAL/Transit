@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BusFragment.BusFragmentListener {
 
     private DrawerLayout drawer;
 
@@ -75,5 +75,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    @Override
+    public void onBusSubmit(String s) {
+        BusFragmentResult busFragmentResult = BusFragmentResult.newInstance(s);
+        getSupportFragmentManager().beginTransaction().replace(
+                R.id.fragment_container, busFragmentResult).commit();
     }
 }
