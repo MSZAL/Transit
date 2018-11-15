@@ -1,13 +1,13 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.CTABuses;
 
 import android.util.Log;
 
-import java.net.URL;
 import java.util.Stack;
+
+import csc472.depaul.edu.transit.CTABuses.BusRequests;
 
 public class BusRequestThread implements Runnable {
 
-    BusResponseSingleton storage = BusResponseSingleton.getInstance();
 
     private Stack<String[]> Requests = new Stack<>();
     private BusRequests requestor;

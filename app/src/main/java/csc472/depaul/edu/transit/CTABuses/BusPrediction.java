@@ -1,4 +1,4 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.CTABuses;
 
 public class BusPrediction {
 
@@ -47,6 +47,11 @@ public class BusPrediction {
 
     public String getDelay(){
         return this.delay;
+    }
+
+    @Override
+    public String toString(){
+        return ("Bus Stop Name: " + this.stopName + ", Predicted Arrival Time: " + this.predictedArrivalTime + ", Predicted Bus Arrival Time: " + this.predictedBusArrivalTime + ", is there a delay: " + this.delay);
     }
 
 }

@@ -1,4 +1,4 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.CTABuses;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import csc472.depaul.edu.transit.R;
+
 public class BusActivity extends AppCompatActivity {
-    //BusResponseSingleton storage = BusResponseSingleton.getInstance();
 
     BusRequestThread bus = new BusRequestThread();
 

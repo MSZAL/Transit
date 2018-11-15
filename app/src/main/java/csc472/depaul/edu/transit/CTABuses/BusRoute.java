@@ -1,9 +1,9 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.CTABuses;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BusRoute implements CTABusInterface{
+public class BusRoute implements CTABusInterface {
 
     private String name;
     private String id;
@@ -121,6 +121,10 @@ public class BusRoute implements CTABusInterface{
             }
         }
         return result;
+    }
+
+    public int size(){
+        return this.CTA.size();
     }
 
 }

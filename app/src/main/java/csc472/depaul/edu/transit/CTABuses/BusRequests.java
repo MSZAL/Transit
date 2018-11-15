@@ -1,5 +1,6 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.CTABuses;
 
+import android.gesture.Prediction;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -9,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class BusRequests extends HttpURLConnection{
 
@@ -47,6 +47,8 @@ public class BusRequests extends HttpURLConnection{
                         BusRoute route = new BusRoute(routeName, routeId);
                         ((BusRoute) result).addRoute(route);
                     }
+                }else if (line.contains("<error>")){
+                    return result;
                 }
             }
         } catch (IOException io) {
@@ -70,6 +72,8 @@ public class BusRequests extends HttpURLConnection{
         CTABusInterface result = null;
         if (route instanceof  BusRoute) {
             result = ((BusRoute) route).find(routeName);
+        }if (((BusRoute)route).size() == 0){
+            return result;
         }
         return result;
     }
@@ -78,17 +82,18 @@ public class BusRequests extends HttpURLConnection{
     private void findDirections(CTABusInterface route){
         BufferedReader in = null;
         try{
-            this.setUrl(new URL(this.BASE_URL + "getdirections" + "?key=" + CTA_API_KEY + "&rt=" + route.getId()));
-            this.connect();
-            in = new BufferedReader(new InputStreamReader(CONN.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null){
-                if (line.contains("dir")){
-                    line = line.replaceAll("\\[^>]*>", "").replaceAll("\t","");
-                    ((BusRoute)route).addDirections(line);
+            if (route.getId() != null) {
+                this.setUrl(new URL(this.BASE_URL + "getdirections" + "?key=" + CTA_API_KEY + "&rt=" + route.getId()));
+                this.connect();
+                in = new BufferedReader(new InputStreamReader(CONN.getInputStream()));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    if (line.contains("dir")) {
+                        line = line.replaceAll("\\[^>]*>", "").replaceAll("\t", "");
+                        ((BusRoute) route).addDirections(line);
+                    }
                 }
             }
-
         }catch (MalformedURLException mue){
 
         }catch (IOException ie){
@@ -151,21 +156,20 @@ public class BusRequests extends HttpURLConnection{
             this.connect();
             in = new BufferedReader(new InputStreamReader(CONN.getInputStream()));
             String line;
-            int count = 0;
+            String stopName = "";
+            String predictedArrivalTime = "";
+            String predictedBusArrivalTime = "";
+            String delay = "";
             while ((line = in.readLine()) != null && resultArray.size() < 2){
-                String stopName = "";
-                String predictedArrivalTime = "";
-                String predictedBusArrivalTime = "";
-                String delay = "";
                 if (line.contains("<stpnm>")){
-                    stopName = line.replaceAll("\\[^>]*>", "").replaceAll("\t", "");
+                    stopName = line.replaceAll("\\<[^>]*>", "").replace("&amp;", "&").replaceAll("\t","");
                 }
                 else if (line.contains("<prdtm>")){
-                    predictedArrivalTime = line.replaceAll("\\[^>]*>", "").replaceAll("\t", "");
-                    delay = (line = in.readLine().replaceAll("\\[^>]*>", "").replaceAll("\t", ""));
+                    predictedArrivalTime = line.replaceAll("\\<[^>]*>", "").replaceAll("\t", "");
+                    delay = (line = in.readLine().replaceAll("\\<[^>]*>", "").replaceAll("\t", ""));
                 }
                 else if (line.contains("<prdctdn>")){
-                    predictedBusArrivalTime = line.replaceAll("\\[^>]*>", "").replaceAll("\t", "");
+                    predictedBusArrivalTime = line.replaceAll("\\<[^>]*>", "").replaceAll("\t", "");
                     BusPrediction predict = new BusPrediction(stopName, predictedArrivalTime, predictedBusArrivalTime, delay);
                     resultArray.add(predict);
                 }
@@ -187,6 +191,7 @@ public class BusRequests extends HttpURLConnection{
         }
         return resultArray;
     }
+
 
     @Override
     public void disconnect() {
@@ -212,19 +217,11 @@ public class BusRequests extends HttpURLConnection{
         String Destination = params[3];
 
         CTABusInterface allRoutes = this.getAllRoutes();
-        Log.i("AllRoutes", "" + allRoutes.getDescription());
         CTABusInterface specifiedRoute = this.findRoute(Route, allRoutes);
-        Log.i("FindRoute", "Returned name: " + specifiedRoute.getName() + ", Request Name: " + Route);
         this.findDirections(specifiedRoute);
-        Log.i("Directions", "" + ((BusRoute)specifiedRoute).getDirections().toString());
         CTABusInterface allStops = this.getAllStops(Direction, specifiedRoute);
-        Log.i("GetAllStops", allStops.getDescription());
         CTABusInterface currentStop = this.findStop(CurrentStop, allStops);
         CTABusInterface destinationStop = this.findStop(Destination, allStops);
-        Log.i("CurrentStop", currentStop.getName());
-        Log.i("DestinationStop", destinationStop.getName());
         ArrayList<BusPrediction> predictArray = this.getPrediction(specifiedRoute, currentStop, destinationStop);
-        Log.i("GetPredictions", predictArray.toString());
-
     }
 }

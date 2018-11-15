@@ -1,6 +1,6 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.CTABuses;
 
-public class BusStop implements CTABusInterface{
+public class BusStop implements CTABusInterface {
 
     private String name;
     private String id;

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import csc472.depaul.edu.transit.CTABuses.BusActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
