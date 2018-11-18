@@ -4,46 +4,29 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="4dp"
-    app:cardBackgroundColor="@color/gray">
+    android:layout_marginBottom="6dp">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="4dp">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:padding="2dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/bus_number"
-            android:layout_width="wrap_content"
+            android:id="@+id/bus_id"
+            android:layout_width="56dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:textSize="18sp"
-            android:text="Bus #"/>
+            android:textSize="24sp"
+            android:textAlignment="center"
+            android:text="#"
+            android:background="@android:color/holo_blue_light"/>
 
         <TextView
-            android:id="@+id/bus_arrival"
+            android:id="@+id/bus_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/bus_number"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:textSize="12sp"
-            android:text="Arrives at: " />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/bus_arrival"
-            android:layout_below="@id/bus_number"
-            android:layout_marginStart="178dp"
-            android:layout_marginTop="4dp"
-            android:textSize="12sp"
-            android:text="Will Arrive in: " />
-
+            android:layout_toEndOf="@id/bus_id"
+            android:layout_marginStart="5dp"
+            android:textSize="22sp"
+            android:text="Bus Name"/>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
