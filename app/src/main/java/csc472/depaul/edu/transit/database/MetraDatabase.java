@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class MetraDatabase {
     private SQLiteOpenHelper openHelper;
@@ -13,7 +12,7 @@ public class MetraDatabase {
 
     /* Constructor */
     private MetraDatabase(Context context) {
-        this.openHelper = new DatabaseOpenHelper(context, "test.db");
+        this.openHelper = new DatabaseOpenHelper(context, "metra.db");
     }
 
     /* Singleton */
@@ -34,22 +33,6 @@ public class MetraDatabase {
         if (database != null) {
             this.database.close();
         }
-    }
-
-    public void testQuery() {
-        open(); // Opens the database
-        Cursor cursor = database.rawQuery("Select * from Students", null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            String firstName = cursor.getString(0);
-            Log.d("SQLLITE", firstName);
-
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        close(); // Closes the database
     }
 
 }

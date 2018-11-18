@@ -15,11 +15,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         database = MetraDatabase.getInstance(getApplicationContext());
-        testDatabase();
     }
 
-    /* Tests the database */
-    private void testDatabase() {
-        database.testQuery();
-    }
 }
