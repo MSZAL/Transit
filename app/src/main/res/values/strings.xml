@@ -10,4 +10,5 @@
     <string name="bus_schedule">Bus Schedule</string>
     <string name="metra_schedule">Metra Schedule</string>
     <string name="train_schedule">Train Schedule</string>
+    <string name="bus_list">Bus List</string>
 </resources>
