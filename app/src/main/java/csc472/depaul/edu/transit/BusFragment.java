@@ -23,12 +23,12 @@ public class BusFragment extends Fragment implements IBusObserver {
     private BusFragmentListener listener;
     //private Button busSearchButton;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private BusFragmentAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
 
     public interface BusFragmentListener {
-        void onBusSubmit(String s);
+        void onBusClick(BusRoute busRoutes);
     }
 
     @Nullable
@@ -91,17 +91,24 @@ public class BusFragment extends Fragment implements IBusObserver {
         @Override
         public boolean handleMessage(Message msg) {
             if (msg != null) {
-                @SuppressWarnings("unchecked")
-                ArrayList<BusRoute> busRoutes = (ArrayList<BusRoute>) msg.obj;
+                @SuppressWarnings("unchecked") final ArrayList<BusRoute> busRoutes = (ArrayList<BusRoute>) msg.obj;
 
                 recyclerView = view.findViewById(R.id.bus_fragment_recycler_view);
                 recyclerView.setHasFixedSize(true);
-                Context c = view.getContext();
                 layoutManager = new LinearLayoutManager(getActivity());
-                Log.d("APPLICATION: ", "STILL WORKING");
                 recyclerView.setLayoutManager(layoutManager);
                 adapter = new BusFragmentAdapter(busRoutes);
                 recyclerView.setAdapter(adapter);
+
+                // When user clicks on an item in the RecyclerView
+                adapter.setOnItemClickListener(new BusFragmentAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        BusRoute busRoute = busRoutes.get(position);
+                        Log.d("BUS ROUTE: ", busRoute.getName());
+                        listener.onBusClick(busRoute);
+                    }
+                });
             }
 
             return true;

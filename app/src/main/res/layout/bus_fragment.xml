@@ -8,7 +8,7 @@
         android:id="@+id/bus_schedule_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/bus_list"
+        android:text="@string/bus_routes"
         android:textSize="24sp"
         android:textAlignment="center"/>
 

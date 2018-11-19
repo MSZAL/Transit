@@ -63,6 +63,30 @@ public class BusRequests extends HttpURLConnection{
         return result;
     }
 
+    public void findDirections(BusRoute route){
+        BufferedReader in = null;
+        try{
+            if (route.getId() != null) {
+                this.setUrl(new URL(this.BASE_URL + "getdirections" + "?key=" + CTA_API_KEY + "&rt=" + route.getId()));
+                this.connect();
+                in = new BufferedReader(new InputStreamReader(CONN.getInputStream()));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    if (line.contains("dir")) {
+                        line = line.replaceAll("\\[^>]*>", "").replaceAll("\t", "");
+                        route.addDirections(line);
+                    }
+                }
+            }
+        }catch (MalformedURLException mue){
+
+        }catch (IOException ie){
+
+        }finally{
+
+        }
+    }
+
     @Override
     public void disconnect() {
         CONN.disconnect();

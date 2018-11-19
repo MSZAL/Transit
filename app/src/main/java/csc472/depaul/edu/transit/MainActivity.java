@@ -87,13 +87,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onBusSubmit(String s) {
-        BusFragmentResult busFragmentResult = BusFragmentResult.newInstance(s);
+    public void onBusClick(BusRoute busRoute) {
+        BusStopsFragment busStopsFragment = BusStopsFragment.newInstance(busRoute);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, busFragmentResult);
+        fragmentTransaction.replace(R.id.fragment_container, busStopsFragment);
         fragmentTransaction.addToBackStack(null); // This lets the user hit the back button and go back for another search
         fragmentTransaction.commit();
     }
+
+
 
     //gets connection status
     private ConnectivityReceiver getConnectivityReceiver() {
