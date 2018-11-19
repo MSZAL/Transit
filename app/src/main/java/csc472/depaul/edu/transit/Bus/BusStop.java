@@ -1,6 +1,9 @@
 package csc472.depaul.edu.transit.Bus;
 
-public class BusStop {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class BusStop implements Parcelable {
 
     private String name;
     private String id;
@@ -20,6 +23,25 @@ public class BusStop {
     }
 
     public BusStop() { }
+
+    protected BusStop(Parcel in) {
+        name = in.readString();
+        id = in.readString();
+        longitude = in.readDouble();
+        latitude = in.readDouble();
+    }
+
+    public static final Creator<BusStop> CREATOR = new Creator<BusStop>() {
+        @Override
+        public BusStop createFromParcel(Parcel in) {
+            return new BusStop(in);
+        }
+
+        @Override
+        public BusStop[] newArray(int size) {
+            return new BusStop[size];
+        }
+    };
 
     public void setName(String newName){
         this.name = newName;
@@ -72,5 +94,18 @@ public class BusStop {
         result = 31 * result + this.name.hashCode();
         result = 31 * result + this.id.hashCode();
         return result;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(id);
+        dest.writeDouble(longitude);
+        dest.writeDouble(latitude);
     }
 }

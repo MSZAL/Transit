@@ -122,6 +122,50 @@ public class BusRequests extends HttpURLConnection{
         return busStops;
     }
 
+    public ArrayList<BusPrediction> getPrediction(BusRoute route, BusStop currentStop){
+        ArrayList<BusPrediction> resultArray = new ArrayList<>();
+        BufferedReader in = null;
+        try{
+            this.setUrl(new URL(this.BASE_URL + "getpredictions" + "?key=" + CTA_API_KEY + "&rt=" + route.getId() + "&stpid=" + currentStop.getId()));
+            this.connect();
+            in = new BufferedReader(new InputStreamReader(CONN.getInputStream()));
+            String line;
+            String stopName = "";
+            String predictedArrivalTime = "";
+            String predictedBusArrivalTime = "";
+            String delay = "";
+            while ((line = in.readLine()) != null && resultArray.size() < 2){
+                if (line.contains("<stpnm>")){
+                    stopName = line.replaceAll("\\<[^>]*>", "").replace("&amp;", "&").replaceAll("\t","");
+                }
+                else if (line.contains("<prdtm>")){
+                    predictedArrivalTime = line.replaceAll("\\<[^>]*>", "").replaceAll("\t", "");
+                    delay = (line = in.readLine().replaceAll("\\<[^>]*>", "").replaceAll("\t", ""));
+                }
+                else if (line.contains("<prdctdn>")){
+                    predictedBusArrivalTime = line.replaceAll("\\<[^>]*>", "").replaceAll("\t", "");
+                    BusPrediction predict = new BusPrediction(stopName, predictedArrivalTime, predictedBusArrivalTime, delay);
+                    resultArray.add(predict);
+                }
+            }
+
+
+        }catch(MalformedURLException mue){
+            Log.e("MalformedURL", mue.getMessage());
+        }catch(IOException io){
+            Log.e("IOException", io.getMessage());
+        }finally{
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            }catch (IOException io){
+                Log.e("IOException", io.getMessage());
+            }
+        }
+        return resultArray;
+    }
+
     @Override
     public void disconnect() {
         CONN.disconnect();

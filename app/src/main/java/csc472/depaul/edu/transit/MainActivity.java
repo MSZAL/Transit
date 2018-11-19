@@ -17,6 +17,8 @@ import android.view.MenuItem;
 
 import csc472.depaul.edu.transit.Bus.BusDirectionFragment;
 import csc472.depaul.edu.transit.Bus.BusFragment;
+import csc472.depaul.edu.transit.Bus.BusPrediction;
+import csc472.depaul.edu.transit.Bus.BusPredictionsFragment;
 import csc472.depaul.edu.transit.Bus.BusRoute;
 import csc472.depaul.edu.transit.Bus.BusStop;
 import csc472.depaul.edu.transit.Bus.BusStopsFragment;
@@ -113,7 +115,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onStopClick(BusRoute busRoute, BusStop busStop) {
-
+        BusPredictionsFragment busPredictionsFragment = BusPredictionsFragment.newInstance(busRoute,busStop);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, busPredictionsFragment);
+        fragmentTransaction.addToBackStack(null); // This lets the user hit the back button and go back for another search
+        fragmentTransaction.commit();
     }
 
     //gets connection status

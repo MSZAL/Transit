@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,15 +117,15 @@ public class BusStopsFragment extends Fragment implements IStopObserver {
                 busStopsFragmentAdapter = new BusStopsFragmentAdapter(busStops);
                 recyclerView.setAdapter(busStopsFragmentAdapter);
 //
-//                // When user clicks on an item in the RecyclerView
-//                adapter.setOnItemClickListener(new BusFragmentAdapter.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(int position) {
-//                        BusRoute busRoute = busRoutes.get(position);
-//                        Log.d("BUS ROUTE: ", busRoute.getName());
-//                        listener.onBusClick(busRoute);
-//                    }
-//                });
+                // When user clicks on an item in the RecyclerView
+                busStopsFragmentAdapter.setOnItemClickListener(new BusStopsFragmentAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        BusStop busStop = busStops.get(position);
+                        Log.d("BUS ROUTE: ", busRoute.getName());
+                        listener.onStopClick(busRoute, busStop);
+                    }
+                });
             }
 
             return true;
