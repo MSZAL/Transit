@@ -12,30 +12,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class BusStopsFragment extends Fragment implements IStopObserver{
+public class BusDirectionFragment extends Fragment implements IDirectionObserver{
 
-    private BusStopsFragmentListener listener;
+    private BusDirectionFragmentListener listener;
     private BusRoute busRoute;
-    private String direction;
     private RecyclerView recyclerView;
-    private BusStopsFragmentAdapter busStopsFragmentAdapter;
+    private BusDirectionFragmentAdapter busDirectionFragmentAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
 
-    public interface BusStopsFragmentListener {
-        void onStopClick(BusRoute busRoute, BusStop busStop);
+    public interface BusDirectionFragmentListener {
+        void onDirectionClick(BusRoute busRoute,String direction);
     }
 
     // Use a factory method rather than passing bundle from main activity
-    public static BusStopsFragment newInstance(BusRoute newBusRoute, String direction) {
+    public static BusDirectionFragment newInstance(BusRoute newBusRoute) {
         Bundle args = new Bundle();
         args.putParcelable("bus_route", newBusRoute);
-        args.putString("direction", direction);
         // args.putString("string", s);
-        BusStopsFragment fragment = new BusStopsFragment();
+        BusDirectionFragment fragment = new BusDirectionFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,14 +43,14 @@ public class BusStopsFragment extends Fragment implements IStopObserver{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.bus_stops_fragment, container, false);
+        View v = inflater.inflate(R.layout.bus_direction_fragment, container, false);
         view = v;
         //textView = v.findViewById(R.id.bus_result_text);
 
         if (getArguments() != null) {
             busRoute = getArguments().getParcelable("bus_route");
-            direction = getArguments().getString("direction");
-            displayStops();
+            displayDirections();
+
         }
 
         return v;
@@ -60,11 +60,11 @@ public class BusStopsFragment extends Fragment implements IStopObserver{
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof BusStopsFragmentListener) {
-            listener = (BusStopsFragmentListener) context;
+        if (context instanceof BusDirectionFragmentListener) {
+            listener = (BusDirectionFragmentListener) context;
         }
         else {
-            throw new RuntimeException(context.toString() + " must implement BusStopsFragmentListener");
+            throw new RuntimeException(context.toString() + " must implement BusDirectionFragmentListener");
         }
     }
 
@@ -74,10 +74,10 @@ public class BusStopsFragment extends Fragment implements IStopObserver{
         listener = null;
     }
 
-    private void displayStops() {
-        StopRequestThread stopRequestThread = StopRequestThread.getStopRequestThread();
-        stopRequestThread.addObserver(this);
-        Thread t = new Thread(stopRequestThread);
+    private void displayDirections() {
+        DirectionRequestThread directionRequestThread = DirectionRequestThread.getDirectionRequestThread();
+        directionRequestThread.addObserver(this);
+        Thread t = new Thread(directionRequestThread);
         t.start();
     }
 
@@ -86,14 +86,11 @@ public class BusStopsFragment extends Fragment implements IStopObserver{
         return busRoute;
     }
 
-    @Override
-    public String getDirection() { return direction; }
-
-    public void update(ArrayList<BusStop> busStops){
+    public void update(ArrayList<String> busDirections){
 
         Message message = Message.obtain();
         if (message != null) {
-            message.obj = busStops;
+            message.obj = busDirections;
 
             mainThreadHandler.sendMessage(message);
         }
@@ -104,15 +101,22 @@ public class BusStopsFragment extends Fragment implements IStopObserver{
         @Override
         public boolean handleMessage(Message msg) {
             if (msg != null) {
-                @SuppressWarnings("unchecked") final ArrayList<BusStop> busStops = (ArrayList<BusStop>) msg.obj;
+                @SuppressWarnings("unchecked") final ArrayList<String> busDirections = (ArrayList<String>) msg.obj;
 
 
-                recyclerView = view.findViewById(R.id.bus_stops_fragment_recycler_view);
+                recyclerView = view.findViewById(R.id.bus_direction_fragment_recycler_view);
                 recyclerView.setHasFixedSize(true);
                 layoutManager = new LinearLayoutManager(getActivity());
                 recyclerView.setLayoutManager(layoutManager);
-                busStopsFragmentAdapter = new BusStopsFragmentAdapter(busStops);
-                recyclerView.setAdapter(busStopsFragmentAdapter);
+                busDirectionFragmentAdapter = new BusDirectionFragmentAdapter(busDirections);
+                recyclerView.setAdapter(busDirectionFragmentAdapter);
+
+                busDirectionFragmentAdapter.setOnItemClickListener(new BusDirectionFragmentAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        listener.onDirectionClick(busRoute,busDirections.get(position));
+                    }
+                });
 //
 //                // When user clicks on an item in the RecyclerView
 //                adapter.setOnItemClickListener(new BusFragmentAdapter.OnItemClickListener() {

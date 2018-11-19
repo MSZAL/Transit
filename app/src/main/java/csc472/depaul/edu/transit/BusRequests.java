@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -67,13 +68,16 @@ public class BusRequests extends HttpURLConnection{
         BufferedReader in = null;
         try{
             if (route.getId() != null) {
+                route.clearDirections();
                 this.setUrl(new URL(this.BASE_URL + "getdirections" + "?key=" + CTA_API_KEY + "&rt=" + route.getId()));
                 this.connect();
                 in = new BufferedReader(new InputStreamReader(CONN.getInputStream()));
                 String line;
                 while ((line = in.readLine()) != null) {
                     if (line.contains("dir")) {
+//                        line = line.replaceAll("\\[^>]*>", "").replaceAll("\t", "");
                         line = line.replaceAll("\\[^>]*>", "").replaceAll("\t", "");
+                        line = line.substring(5, line.length() - 6); // Removes <dir> </dir> tags
                         route.addDirections(line);
                     }
                 }
@@ -85,6 +89,38 @@ public class BusRequests extends HttpURLConnection{
         }finally{
 
         }
+    }
+
+    public ArrayList<BusStop> getAllStops(BusRoute route, String direction) {
+        ArrayList<BusStop> busStops = new ArrayList<>();
+        BufferedReader in = null;
+        try{
+            this.setUrl(new URL(this.BASE_URL + "getstops" + "?key=" + CTA_API_KEY + "&rt=" + route.getId() + "&dir=" + direction));
+            this.connect();
+            in = new BufferedReader(new InputStreamReader(CONN.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                if (line.contains("<stpid>")) {
+                    String stopId = line.replaceAll("\\<[^>]*>", "").replaceAll("\t", "");
+                    String stopName = line = in.readLine().replaceAll("\\<[^>]*>", "").replace("&amp;", "&").replaceAll("\t","");
+                    double longitude = Double.parseDouble(line = in.readLine().replaceAll("\\<[^>]*>", "").replace("\t", ""));
+                    double latitude = Double.parseDouble(line = in.readLine().replaceAll("\\<[^>]*>","").replace("\t", ""));
+                    BusStop stop = new BusStop(stopName, stopId, longitude, latitude);
+                    busStops.add(stop);
+                }
+            }
+        }catch (IOException io){
+            Log.e("IOException", io.getMessage());
+        }finally{
+            if (in != null){
+                try {
+                    in.close();
+                }catch(IOException io){
+                    Log.e("IOException", io.getMessage());
+                }
+            }
+        }
+        return busStops;
     }
 
     @Override

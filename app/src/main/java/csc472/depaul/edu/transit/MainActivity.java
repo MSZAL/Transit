@@ -15,7 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BusFragment.BusFragmentListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        BusFragment.BusFragmentListener, BusDirectionFragment.BusDirectionFragmentListener, BusStopsFragment.BusStopsFragmentListener {
 
     private DrawerLayout drawer;
 
@@ -88,14 +89,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBusClick(BusRoute busRoute) {
-        BusStopsFragment busStopsFragment = BusStopsFragment.newInstance(busRoute);
+        BusDirectionFragment busDirectionFragment = BusDirectionFragment.newInstance(busRoute);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, busDirectionFragment);
+        fragmentTransaction.addToBackStack(null); // This lets the user hit the back button and go back for another search
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onDirectionClick(BusRoute busRoute, String direction) {
+        BusStopsFragment busStopsFragment = BusStopsFragment.newInstance(busRoute, direction);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, busStopsFragment);
         fragmentTransaction.addToBackStack(null); // This lets the user hit the back button and go back for another search
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onStopClick(BusRoute busRoute, BusStop busStop) {
 
+    }
 
     //gets connection status
     private ConnectivityReceiver getConnectivityReceiver() {
@@ -123,4 +136,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.e("jeremy", e.getMessage());
         }
     }
+
 }

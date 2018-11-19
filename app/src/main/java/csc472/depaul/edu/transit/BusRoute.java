@@ -61,6 +61,8 @@ public class BusRoute implements Parcelable {
         this.directions.add(directions);
     }
 
+    public void clearDirections() { this.directions = new ArrayList<>(); }
+
     @Override
     public int describeContents() {
         return 0;
