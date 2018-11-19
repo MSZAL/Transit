@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -85,7 +87,7 @@ public class MetraDatabase {
             int departureOrder = getOrder(trip, departureId);
             int destinationOrder = getOrder(trip, destinationId);
 
-            if (departureOrder < destinationOrder) {
+            if (departureOrder < destinationOrder && (departureOrder != -99 && destinationOrder != -99)) {
                 tripInfo.add(getTripInfo(trip, departureOrder, destinationOrder));
             }
         }
@@ -193,15 +195,8 @@ public class MetraDatabase {
         ArrayList<String> trips = new ArrayList<>();
         ArrayList<String> dayId = getDayId();
 
-        StringBuilder days = new StringBuilder("(");
-        int size = dayId.size();
-        for (int i=0; i<size; i++) {
-            if (i != size-1) {
-                days.append("dayId = '").append(dayId.get(i)).append("' or ");
-            } else {
-                days.append("dayId = '").append(dayId.get(i)).append("')");
-            }
-        }
+        StringBuilder days = new StringBuilder("(")
+                .append("dayId = '").append(dayId.get(0)).append("')");
 
         openDatabase();
         String sql = new StringBuilder("SELECT DISTINCT tripId FROM Trips WHERE (")
@@ -223,13 +218,18 @@ public class MetraDatabase {
     /* Gets the order of your stop */
     private int getOrder(String tripId, String stopId) {
 
+        int order = -99;
+
         openDatabase();
         String sql = new StringBuilder().append("SELECT stopOrder FROM StopTimes WHERE tripId = '")
                 .append(tripId).append("' AND stopID = '").append(stopId).append("';").toString();
 
         Cursor cursor = database.rawQuery(sql, null);
         cursor.moveToFirst();
-        int order = cursor.getInt(0);
+        while (!cursor.isAfterLast()) {
+            order = cursor.getInt(0);
+            cursor.moveToNext();
+        }
         cursor.close();
         closeDatabase();
 

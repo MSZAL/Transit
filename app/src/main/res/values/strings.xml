@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Transit</string>
+    <string name="metra_line">Metra Line</string>
+    <string name="departure">Departure</string>
+    <string name="destination">Destination</string>
+    <string name="search">SEARCH</string>
 </resources>
