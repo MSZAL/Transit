@@ -1,4 +1,4 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.Bus;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-public class BusStopsFragment extends Fragment implements IStopObserver{
+import csc472.depaul.edu.transit.R;
+
+public class BusStopsFragment extends Fragment implements IStopObserver {
 
     private BusStopsFragmentListener listener;
     private BusRoute busRoute;

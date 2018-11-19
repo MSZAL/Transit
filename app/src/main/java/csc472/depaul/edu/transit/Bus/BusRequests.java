@@ -1,11 +1,10 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.Bus;
 
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;

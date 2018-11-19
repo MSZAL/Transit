@@ -1,7 +1,6 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.Bus;
 
 import android.content.Context;
-import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,9 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.ArrayList;
+
+import csc472.depaul.edu.transit.R;
 
 public class BusFragment extends Fragment implements IBusObserver {
 

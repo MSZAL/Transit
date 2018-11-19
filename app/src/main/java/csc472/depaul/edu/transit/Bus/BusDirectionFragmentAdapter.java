@@ -1,4 +1,4 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.Bus;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import csc472.depaul.edu.transit.R;
 
 public class BusDirectionFragmentAdapter extends RecyclerView.Adapter<BusDirectionFragmentAdapter.BusDirectionViewHolder> {
 

@@ -15,6 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import csc472.depaul.edu.transit.Bus.BusDirectionFragment;
+import csc472.depaul.edu.transit.Bus.BusFragment;
+import csc472.depaul.edu.transit.Bus.BusRoute;
+import csc472.depaul.edu.transit.Bus.BusStop;
+import csc472.depaul.edu.transit.Bus.BusStopsFragment;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         BusFragment.BusFragmentListener, BusDirectionFragment.BusDirectionFragmentListener, BusStopsFragment.BusStopsFragmentListener {
 
