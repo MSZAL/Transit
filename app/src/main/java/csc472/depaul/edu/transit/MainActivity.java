@@ -3,6 +3,7 @@ package csc472.depaul.edu.transit;
 
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -74,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch(menuItem.getItemId()) {
             case R.id.map:
-                // TODO: Add map fragment
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new MapsFragment()).commit();
                 break;
             case R.id.bus:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,

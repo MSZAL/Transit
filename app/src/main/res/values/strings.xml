@@ -11,4 +11,6 @@
     <string name="metra_schedule">Metra Schedule</string>
     <string name="train_schedule">Train Schedule</string>
     <string name="bus_routes">Bus Routes</string>
+    <string name="API_Key">AIzaSyBWEVaVtApOCyftY0o4Uo51XMPhjVPLOvE
+    </string>
 </resources>
