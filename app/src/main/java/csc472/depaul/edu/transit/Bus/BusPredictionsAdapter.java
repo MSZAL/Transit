@@ -73,7 +73,7 @@ public class BusPredictionsAdapter extends RecyclerView.Adapter<BusPredictionsAd
 
         busPredictionViewHolder.time.setText(currentPrediction.getPredictedArrivalTime());
         busPredictionViewHolder.vehicleRt.setText("#" +currentPrediction.getVehicleRt());
-        busPredictionViewHolder.vehicleDest.setText(currentPrediction.getVehicleDest());
+        busPredictionViewHolder.vehicleDest.setText("(" + currentPrediction.getVehicleDest() + ")");
 
 
 //        busViewHolder.busId.setText(currentRoute.getId());
