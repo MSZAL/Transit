@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             // TODO: Start map fragment instead of bus fragment
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new BusFragment()).commit();
-            navigationView.setCheckedItem(R.id.bus);
+                    new MapsFragment()).commit();
+            navigationView.setCheckedItem(R.id.map);
         }
     }
 
