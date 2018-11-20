@@ -1,6 +1,5 @@
 package csc472.depaul.edu.transit;
 
-
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
