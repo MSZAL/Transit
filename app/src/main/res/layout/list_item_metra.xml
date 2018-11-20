@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="5sp">
+
+            <TextView
+                android:id="@+id/item_stop"
+                android:text="Station"
+                android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+                android:textSize="20sp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_gravity="right"
+                />
+
+            <TextView
+                android:id="@+id/item_zone"
+                android:text="Zone: F"
+                android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+                android:textSize="14sp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_time"
+                android:text="time"
+                android:textSize="30sp"
+                android:textColor="@color/green"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:gravity="center|right"
+                android:paddingRight="30sp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

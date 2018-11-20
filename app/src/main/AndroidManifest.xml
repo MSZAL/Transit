@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="csc472.depaul.edu.transit">
 
-
     <!--Permissions for checking network and user location-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -32,8 +31,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_Key" />
+
+        <!-- Metra activities -->
+        <activity android:name=".metra.MetraHome"></activity>
+        <activity android:name=".metra.MetraDisplay"></activity>
     </application>
-
-
 
 </manifest>
