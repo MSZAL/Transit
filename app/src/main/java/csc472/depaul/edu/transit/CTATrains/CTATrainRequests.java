@@ -1,13 +1,11 @@
 package csc472.depaul.edu.transit.CTATrains;
 
 
-import android.gesture.Prediction;
-import android.util.Log;
 
+import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 public class CTATrainRequests extends HttpURLConnection {
 
     private final String CTA_TRAIN_API_KEY = "d37555ccc09141848543ab21e287b560";
-    private String baseUrl = "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=";
+    private String baseUrl = "http://lapi.transitchicago.com/api/1.0/";
 
     private static URL URL;
     private static HttpURLConnection CONN;
@@ -48,12 +46,12 @@ public class CTATrainRequests extends HttpURLConnection {
         CONN.setRequestMethod("GET");
     }
 
-
+    // Gets information about the current stop selected by the user
     private CTATrainPrediction getStopPrediction(int Stopid){
         CTATrainPrediction predict = new CTATrainPrediction();
         BufferedReader in = null;
         try {
-            this.setUrl(new URL(baseUrl + CTA_TRAIN_API_KEY + "&" + "stpid=" + Stopid + "&max=1"));
+            this.setUrl(new URL(baseUrl + "ttarrivals.aspx?key=" + CTA_TRAIN_API_KEY + "&" + "stpid=" + Stopid + "&max=1"));
             this.connect();
             in = new BufferedReader(new InputStreamReader(CONN.getInputStream()));
             String line;
@@ -110,17 +108,62 @@ public class CTATrainRequests extends HttpURLConnection {
         return predict;
     }
 
-    private ArrayList<CTATrainPrediction> followTrain(int runNumber, String destinationStop){
+    // Gets all the train stations in the current route selected by the user in the appropriate direction
+    private ArrayList<CTATrainPrediction> getAllRouteStops(int runNumber){
+        ArrayList<CTATrainPrediction> allStopsInRoute = new ArrayList<>();
+        BufferedReader in;
+        try{
+            this.setUrl(new URL(baseUrl + "ttfollow.aspx?key=" + CTA_TRAIN_API_KEY + "&" + "runnumber=" + runNumber));
+            this.connect();
+            in = new BufferedReader(new InputStreamReader(CONN.getInputStream()));
+            String stopName = "";
+            String routeName = "";
+            String timeStamp = "";
+            String estimatedTimeArrival = "";
+            String isApproaching = "";
+            String isDelayed = "";
+            String line;
+            if((line = in.readLine()) != null){
+                String[] ETA = line.split("<eta>");
+                for (int i = 1; i< ETA.length; i++){
+                    String[] replaced = ETA[i].split("\\<[^>]*>");
+                    stopName = replaced[5];
+                    routeName = replaced[11];
+                    timeStamp = replaced[19];
+                    estimatedTimeArrival = replaced[21];
+                    isApproaching = replaced[23];
+                    isDelayed = replaced[27];
+                    CTATrainPrediction prediction = new CTATrainPrediction();
+                    prediction.setStopName(stopName);
+                    prediction.setRunNumber("" + runNumber);
+                    prediction.setRouteName(routeName);
+                    prediction.setTimeStamp(timeStamp);
+                    prediction.setEstimatedArrivalTime(estimatedTimeArrival);
+                    prediction.setIsApproaching(isApproaching);
+                    prediction.setIsDelayed(isDelayed);
+                    allStopsInRoute.add(prediction);
+                }
+            }
+        }catch(IOException io){
+
+        }
+
+        return allStopsInRoute;
+    }
+
+    private CTATrainPrediction followTrain(ArrayList<CTATrainPrediction> predictions, int destinationStopId){
 
         return null;
     }
 
 
+    // Gets the selected ID from the user and uses it to find stop and route information
     public void ServeRequest(int Stopid){
 
         CTATrainPrediction predict = this.getStopPrediction(Stopid);
-
         Log.i("PredictServed", predict.toString());
+        ArrayList<CTATrainPrediction> AllStopsInRoute = this.getAllRouteStops(predict.getRunNumber());
+        Log.i("AllStopsInRoute", AllStopsInRoute.toString());
     }
 
 
