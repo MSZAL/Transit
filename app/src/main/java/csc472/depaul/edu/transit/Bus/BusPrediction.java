@@ -6,12 +6,16 @@ public class BusPrediction {
     private String predictedArrivalTime;
     private String predictedBusArrivalTime;
     private String delay;
+    private String vehicleId; //Vehicle Id
+    private String vehicleDest;
+    private String vehicleRt;
 
-    public BusPrediction(String stopName, String predictedArrivalTime, String predictedBusArrivalTime, String delay){
+    public BusPrediction(String stopName, String predictedArrivalTime, String predictedBusArrivalTime, String delay, String vehicleId){
         this.stopName = stopName;
-        this.predictedArrivalTime = predictedArrivalTime;
+        this.predictedArrivalTime = predictedArrivalTime.substring(predictedArrivalTime.length() - 5, predictedArrivalTime.length());
         this.predictedBusArrivalTime = predictedBusArrivalTime;
         this.delay = delay;
+        this.vehicleId = vehicleId;
     }
 
     public BusPrediction(){ }
@@ -47,6 +51,30 @@ public class BusPrediction {
 
     public String getDelay(){
         return this.delay;
+    }
+
+    public String getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(String vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public String getVehicleDest() {
+        return vehicleDest;
+    }
+
+    public void setVehicleDest(String vehicleDest) {
+        this.vehicleDest = vehicleDest.replaceAll(" ", "");
+    }
+
+    public String getVehicleRt() {
+        return vehicleRt;
+    }
+
+    public void setVehicleRt(String vehicleRt) {
+        this.vehicleRt = vehicleRt.replaceAll(" ", "");;
     }
 
     @Override

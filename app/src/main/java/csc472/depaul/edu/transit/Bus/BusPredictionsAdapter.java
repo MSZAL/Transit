@@ -26,12 +26,17 @@ public class BusPredictionsAdapter extends RecyclerView.Adapter<BusPredictionsAd
 
     public static class BusPredictionViewHolder extends RecyclerView.ViewHolder {
 
-        TextView text;
+        TextView time;
+        TextView vehicleRt;
+        TextView vehicleDest;
 
         public BusPredictionViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
-            text = itemView.findViewById(R.id.bus_prediction_item);
+            time = itemView.findViewById(R.id.bus_prediction_time);
+            vehicleRt = itemView.findViewById(R.id.bus_prediction_rt);
+            vehicleDest = itemView.findViewById(R.id.bus_prediction_dest);
+
 
 //            busId = itemView.findViewById(R.id.bus_id);
 //            busName = itemView.findViewById(R.id.bus_name);
@@ -66,7 +71,10 @@ public class BusPredictionsAdapter extends RecyclerView.Adapter<BusPredictionsAd
     public void onBindViewHolder(@NonNull BusPredictionViewHolder busPredictionViewHolder, int i) {
         BusPrediction currentPrediction = busPredictions.get(i);
 
-        busPredictionViewHolder.text.setText(currentPrediction.getPredictedArrivalTime());
+        busPredictionViewHolder.time.setText(currentPrediction.getPredictedArrivalTime());
+        busPredictionViewHolder.vehicleRt.setText("#" +currentPrediction.getVehicleRt());
+        busPredictionViewHolder.vehicleDest.setText(currentPrediction.getVehicleDest());
+
 
 //        busViewHolder.busId.setText(currentRoute.getId());
 //        busViewHolder.busName.setText(currentRoute.getName());

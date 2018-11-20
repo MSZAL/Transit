@@ -33,6 +33,11 @@ public class PredictionRequestThread implements Runnable {
                     BusRoute busRoute = observer.getRoute();
                     BusStop busStop = observer.getStop();
                     ArrayList<BusPrediction> busPredictions = busRequests.getPrediction(busRoute, busStop);
+
+                    for (BusPrediction busPrediction : busPredictions) {
+                        busRequests.getVehicleDest(busPrediction,busRoute);
+                    }
+
                     observer.update(busPredictions);
                 }
             }

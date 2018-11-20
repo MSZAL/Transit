@@ -6,11 +6,36 @@
     app:cardCornerRadius="4dp"
     android:layout_marginBottom="6dp">
 
-    <TextView
-        android:id="@+id/bus_prediction_item"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="Bus Prediction"/>
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/bus_prediction_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:text="Bus Prediction"
+            android:layout_marginEnd="2dp"/>
+
+        <TextView
+            android:id="@+id/bus_prediction_rt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:text="Rt#"
+            android:layout_marginEnd="2dp"/>
+
+        <TextView
+            android:id="@+id/bus_prediction_dest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:text="Dest"/>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

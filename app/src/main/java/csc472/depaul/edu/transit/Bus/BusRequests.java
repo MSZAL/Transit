@@ -86,7 +86,7 @@ public class BusRequests extends HttpURLConnection{
         }catch (IOException ie){
 
         }finally{
-
+            disconnect();
         }
     }
 
@@ -114,6 +114,7 @@ public class BusRequests extends HttpURLConnection{
             if (in != null){
                 try {
                     in.close();
+                    disconnect();
                 }catch(IOException io){
                     Log.e("IOException", io.getMessage());
                 }
@@ -133,8 +134,9 @@ public class BusRequests extends HttpURLConnection{
             String stopName = "";
             String predictedArrivalTime = "";
             String predictedBusArrivalTime = "";
+            String vehicleId = "";
             String delay = "";
-            while ((line = in.readLine()) != null && resultArray.size() < 2){
+            while ((line = in.readLine()) != null){
                 if (line.contains("<stpnm>")){
                     stopName = line.replaceAll("\\<[^>]*>", "").replace("&amp;", "&").replaceAll("\t","");
                 }
@@ -142,9 +144,12 @@ public class BusRequests extends HttpURLConnection{
                     predictedArrivalTime = line.replaceAll("\\<[^>]*>", "").replaceAll("\t", "");
                     delay = (line = in.readLine().replaceAll("\\<[^>]*>", "").replaceAll("\t", ""));
                 }
+                else if (line.contains("<vid>")){
+                    vehicleId = line.replaceAll("\\<[^>]*>", "").replaceAll("\t", "");
+                }
                 else if (line.contains("<prdctdn>")){
                     predictedBusArrivalTime = line.replaceAll("\\<[^>]*>", "").replaceAll("\t", "");
-                    BusPrediction predict = new BusPrediction(stopName, predictedArrivalTime, predictedBusArrivalTime, delay);
+                    BusPrediction predict = new BusPrediction(stopName, predictedArrivalTime, predictedBusArrivalTime, delay, vehicleId);
                     resultArray.add(predict);
                 }
             }
@@ -158,12 +163,43 @@ public class BusRequests extends HttpURLConnection{
             try {
                 if (in != null) {
                     in.close();
+                    disconnect();
                 }
             }catch (IOException io){
                 Log.e("IOException", io.getMessage());
             }
         }
         return resultArray;
+    }
+
+    public boolean getVehicleDest(BusPrediction busPrediction, BusRoute route) {
+        BufferedReader in = null;
+        try{
+            this.setUrl(new URL(this.BASE_URL + "getvehicles" + "?key=" + CTA_API_KEY + "&rt=" + route.getId() + "&vid=" + busPrediction.getVehicleId()));
+            this.connect();
+            in = new BufferedReader(new InputStreamReader(CONN.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                if (line.contains("<des>")) {
+                    busPrediction.setVehicleDest(line.replaceAll("\\<[^>]*>", "").replaceAll("\t", ""));
+                }
+                if (line.contains("<rt>")) {
+                    busPrediction.setVehicleRt(line.replaceAll("\\<[^>]*>", "").replaceAll("\t", ""));
+                }
+            }
+        }catch (IOException io){
+            Log.e("IOException", io.getMessage());
+        }finally{
+            if (in != null){
+                try {
+                    in.close();
+                    disconnect();
+                }catch(IOException io){
+                    Log.e("IOException", io.getMessage());
+                }
+            }
+        }
+        return true;
     }
 
     @Override
