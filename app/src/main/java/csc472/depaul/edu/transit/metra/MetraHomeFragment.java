@@ -1,42 +1,49 @@
 package csc472.depaul.edu.transit.metra;
 
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import csc472.depaul.edu.transit.R;
 import csc472.depaul.edu.transit.metra.database.MetraDatabase;
 
-public class MetraHome extends AppCompatActivity {
+public class MetraHomeFragment extends Fragment {
 
-    MetraDatabase database;
-    Button showLines, showDeparture, showDestination, search;
-    String userLine, userDeparture, userDestination;
+    public interface MetraHomeListener {
+        void metraDisplayValues(MetraInfo input);
+    }
 
+    private MetraHomeListener listener;
+    private MetraDatabase database;
+    private String userLine, userDeparture, userDestination;
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_metra_home);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View metraView =  inflater.inflate(R.layout.activity_metra_home, container, false);
 
-        database = MetraDatabase.getInstance(getApplicationContext());
+        database = MetraDatabase.getInstance(metraView.getContext());
 
         /* Sets the Metra Line button */
-        showLines = findViewById(R.id.lineBtn);
+        Button showLines = metraView.findViewById(R.id.lineBtn);
         showLines.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MetraHome.this);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(metraView.getContext());
                 View mView = getLayoutInflater().inflate(R.layout.spinner_metra, null);
                 mBuilder.setTitle("Select a Metra train line");
                 final Spinner mSpinner = mView.findViewById(R.id.spinner);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MetraHome.this,
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(metraView.getContext(),
                         android.R.layout.simple_spinner_dropdown_item, database.getMetraLines());
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mSpinner.setAdapter(adapter);
@@ -63,15 +70,15 @@ public class MetraHome extends AppCompatActivity {
         });
 
         /* Sets the Departure button */
-        showDeparture = findViewById(R.id.departureBtn);
+        Button showDeparture = metraView.findViewById(R.id.departureBtn);
         showDeparture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MetraHome.this);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(metraView.getContext());
                 View mView = getLayoutInflater().inflate(R.layout.spinner_metra, null);
                 mBuilder.setTitle("Select your departure");
                 final Spinner mSpinner = mView.findViewById(R.id.spinner);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MetraHome.this,
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(metraView.getContext(),
                         android.R.layout.simple_spinner_dropdown_item, database.getStops(userLine));
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mSpinner.setAdapter(adapter);
@@ -98,15 +105,15 @@ public class MetraHome extends AppCompatActivity {
         });
 
         /* Sets the Destination button */
-        showDestination = findViewById(R.id.destinationBtn);
+        Button showDestination = metraView.findViewById(R.id.destinationBtn);
         showDestination.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MetraHome.this);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(metraView.getContext());
                 View mView = getLayoutInflater().inflate(R.layout.spinner_metra, null);
                 mBuilder.setTitle("Select your destination");
                 final Spinner mSpinner = mView.findViewById(R.id.spinner);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MetraHome.this,
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(metraView.getContext(),
                         android.R.layout.simple_spinner_dropdown_item, database.getStops(userLine));
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mSpinner.setAdapter(adapter);
@@ -133,31 +140,37 @@ public class MetraHome extends AppCompatActivity {
         });
 
         /* Sets up the search button */
-        search = findViewById(R.id.searchBtn);
-        if (search != null) {
-            search.setOnClickListener(onClickSearch);
-        }
+        Button search = metraView.findViewById(R.id.searchBtn);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userLine != null && userDeparture != null && userDestination != null) {
+                    MetraInfo metraInfo = new MetraInfo(userLine, userDeparture, userDestination);
+                    listener.metraDisplayValues(metraInfo);
+                } else {
+                    String sToastMessage = "You need to select a choice from each category";
+                    Toast toast = Toast.makeText(metraView.getContext(), sToastMessage, Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+        });
 
+        return metraView;
     }
 
-    /* On click it goes to next activity */
-    private View.OnClickListener onClickSearch = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (userLine != null && userDeparture != null && userDestination != null) {
-                MetraInfo metra = new MetraInfo(userLine, userDeparture, userDestination);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("metraValues", metra);
-
-                Intent intent = new Intent(getBaseContext(), MetraDisplay.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            } else {
-                String sToastMessage = "You need to select a choice from each category";
-                Toast toast = Toast.makeText(getApplicationContext(), sToastMessage, Toast.LENGTH_LONG);
-                toast.show();
-            }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof MetraHomeListener) {
+            listener = (MetraHomeListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement MetraHomeListener");
         }
-    };
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
 }

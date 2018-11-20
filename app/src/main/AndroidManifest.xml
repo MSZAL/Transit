@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
-            android:theme="@style/AppTheme.noActionBar">
+            android:theme="@style/AppTheme.noActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,9 +33,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/API_Key" />
 
-        <!-- Metra activities -->
-        <activity android:name=".metra.MetraHome"></activity>
-        <activity android:name=".metra.MetraDisplay"></activity>
     </application>
 
 </manifest>

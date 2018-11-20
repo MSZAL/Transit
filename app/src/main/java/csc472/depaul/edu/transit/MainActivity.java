@@ -22,15 +22,18 @@ import csc472.depaul.edu.transit.Bus.BusPredictionsFragment;
 import csc472.depaul.edu.transit.Bus.BusRoute;
 import csc472.depaul.edu.transit.Bus.BusStop;
 import csc472.depaul.edu.transit.Bus.BusStopsFragment;
+import csc472.depaul.edu.transit.metra.MetraDisplayFragment;
+import csc472.depaul.edu.transit.metra.MetraHomeFragment;
+import csc472.depaul.edu.transit.metra.MetraInfo;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        BusFragment.BusFragmentListener, BusDirectionFragment.BusDirectionFragmentListener, BusStopsFragment.BusStopsFragmentListener {
+        BusFragment.BusFragmentListener, BusDirectionFragment.BusDirectionFragmentListener, BusStopsFragment.BusStopsFragmentListener,
+        MetraHomeFragment.MetraHomeListener {
 
     private DrawerLayout drawer;
 
     //gets connection status
     private ConnectivityReceiver connectivityReceiver;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.metra:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new MetraFragment()).commit();
+                        new MetraHomeFragment()).commit();
                 break;
         }
 
@@ -123,6 +126,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void metraDisplayValues(MetraInfo input) {
+        MetraDisplayFragment displayFragment = new MetraDisplayFragment();
+        displayFragment.updateMetraValues(input);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, displayFragment);
+        fragmentTransaction.addToBackStack(null); // This lets the user hit the back button and go back for another search
+        fragmentTransaction.commit();
+    }
+
     //gets connection status
     private ConnectivityReceiver getConnectivityReceiver() {
         if (connectivityReceiver == null)
@@ -130,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return connectivityReceiver;
     }
-
 
     private void registerConnectivityReceiver() {
         try {
