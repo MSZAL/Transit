@@ -48,7 +48,7 @@ public class StationInfo {
             timeBuilder.append(time);
         }
 
-        if (timeOfDay < 12 && timeOfDay != 24) {
+        if (timeOfDay < 12 || timeOfDay >= 24) {
             timeBuilder.append(" am");
         } else {
             timeBuilder.append(" pm");
