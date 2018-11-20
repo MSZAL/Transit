@@ -72,13 +72,26 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         String tripId = getTrip(groupPosition).getTripId();
+        String startTime = getTrip(groupPosition).getStartTime();
+        String endTime = getTrip(groupPosition).getEndTime();
+        String stops = new StringBuilder().append(Integer.toString(getTrip(groupPosition).getTripLength())).append(" Stops").toString();
+        String time = new StringBuilder().append(startTime).append(" ➔ ").append(endTime).toString();
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_group_metra, null);
         }
-        TextView textView = convertView.findViewById(R.id.textView);
-        textView.setText(tripId);
+
+        TextView tripView = convertView.findViewById(R.id.group_tripid);
+        tripView.setText(tripId);
+
+        TextView stopView = convertView.findViewById(R.id.group_number_of_stops);
+        stopView.setText(stops);
+
+        TextView timeView = convertView.findViewById(R.id.group_time);
+        timeView.setText(time);
+
+
         return convertView;
     }
 
@@ -86,14 +99,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         StationInfo station = getStation(groupPosition, childPosition);
-        final String childText = station.getName();
+
+        String stop = station.getName();
+        String time = station.getTime();
+        String zone = new StringBuilder().append("Zone: ").append(station.getZone()).toString();
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item_metra, null);
         }
-        TextView textView = convertView.findViewById(R.id.itemId);
-        textView.setText(childText);
+
+        TextView stopView = convertView.findViewById(R.id.item_stop);
+        stopView.setText(stop);
+
+        TextView zoneView = convertView.findViewById(R.id.item_zone);
+        zoneView.setText(zone);
+
+        TextView timeView = convertView.findViewById(R.id.item_time);
+        timeView.setText(time);
         return convertView;
     }
 
