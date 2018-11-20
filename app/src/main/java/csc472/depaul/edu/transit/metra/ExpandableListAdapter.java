@@ -1,4 +1,4 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.metra;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
-import csc472.depaul.edu.transit.database.StationInfo;
-import csc472.depaul.edu.transit.database.TripInfo;
+
+import csc472.depaul.edu.transit.R;
+import csc472.depaul.edu.transit.metra.database.StationInfo;
+import csc472.depaul.edu.transit.metra.database.TripInfo;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -73,7 +75,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_group, null);
+            convertView = inflater.inflate(R.layout.list_group_metra, null);
         }
         TextView textView = convertView.findViewById(R.id.textView);
         textView.setText(tripId);
@@ -88,7 +90,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_item, null);
+            convertView = inflater.inflate(R.layout.list_item_metra, null);
         }
         TextView textView = convertView.findViewById(R.id.itemId);
         textView.setText(childText);

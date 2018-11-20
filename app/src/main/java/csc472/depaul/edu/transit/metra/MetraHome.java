@@ -1,4 +1,4 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.metra;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +11,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import csc472.depaul.edu.transit.database.MetraDatabase;
+import csc472.depaul.edu.transit.R;
+import csc472.depaul.edu.transit.metra.database.MetraDatabase;
 
 public class MetraHome extends AppCompatActivity {
 
@@ -32,7 +33,7 @@ public class MetraHome extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(MetraHome.this);
-                View mView = getLayoutInflater().inflate(R.layout.spinner, null);
+                View mView = getLayoutInflater().inflate(R.layout.spinner_metra, null);
                 mBuilder.setTitle("Select a Metra train line");
                 final Spinner mSpinner = mView.findViewById(R.id.spinner);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(MetraHome.this,
@@ -67,7 +68,7 @@ public class MetraHome extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(MetraHome.this);
-                View mView = getLayoutInflater().inflate(R.layout.spinner, null);
+                View mView = getLayoutInflater().inflate(R.layout.spinner_metra, null);
                 mBuilder.setTitle("Select your departure");
                 final Spinner mSpinner = mView.findViewById(R.id.spinner);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(MetraHome.this,
@@ -102,7 +103,7 @@ public class MetraHome extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(MetraHome.this);
-                View mView = getLayoutInflater().inflate(R.layout.spinner, null);
+                View mView = getLayoutInflater().inflate(R.layout.spinner_metra, null);
                 mBuilder.setTitle("Select your destination");
                 final Spinner mSpinner = mView.findViewById(R.id.spinner);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(MetraHome.this,

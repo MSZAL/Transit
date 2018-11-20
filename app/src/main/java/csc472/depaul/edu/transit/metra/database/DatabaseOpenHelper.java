@@ -1,4 +1,4 @@
-package csc472.depaul.edu.transit.database;
+package csc472.depaul.edu.transit.metra.database;
 
 import android.content.Context;
 

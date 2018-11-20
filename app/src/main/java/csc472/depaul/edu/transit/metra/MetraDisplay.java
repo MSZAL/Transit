@@ -1,4 +1,4 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.metra;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,9 +7,10 @@ import android.widget.ExpandableListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import csc472.depaul.edu.transit.database.MetraDatabase;
-import csc472.depaul.edu.transit.database.StationInfo;
-import csc472.depaul.edu.transit.database.TripInfo;
+import csc472.depaul.edu.transit.R;
+import csc472.depaul.edu.transit.metra.database.MetraDatabase;
+import csc472.depaul.edu.transit.metra.database.StationInfo;
+import csc472.depaul.edu.transit.metra.database.TripInfo;
 
 public class MetraDisplay extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package csc472.depaul.edu.transit;
+package csc472.depaul.edu.transit.metra;
 
 import android.os.Parcel;
 import android.os.Parcelable;
