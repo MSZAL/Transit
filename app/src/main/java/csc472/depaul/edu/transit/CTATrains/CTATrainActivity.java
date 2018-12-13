@@ -4,8 +4,7 @@ package csc472.depaul.edu.transit.CTATrains;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+
 
 import java.util.ArrayList;
 
@@ -34,10 +33,10 @@ public class CTATrainActivity extends AppCompatActivity {
         }
 
 
-        final int StopChoice = 30236;
+        final int CurrentStopId = 30236;
+        final int DestinationStopId = 30110;
 
-
-        newThread.pushRequests(StopChoice);
+        newThread.pushRequests(CurrentStopId);
 
 
 

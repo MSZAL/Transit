@@ -22,6 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CTABuses.BusActivity" android:parentActivityName=".MainActivity">
+        </activity>
+        <activity android:name=".CTATrains.CTATrainActivity" android:parentActivityName=".MainActivity">
 
         </activity>
     </application>

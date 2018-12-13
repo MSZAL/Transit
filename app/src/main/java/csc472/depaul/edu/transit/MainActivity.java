@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import csc472.depaul.edu.transit.CTABuses.BusActivity;
+import csc472.depaul.edu.transit.CTATrains.CTATrainActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mToggle.onOptionsItemSelected(item)) {          // Change this into a switch after further development
-            startActivity(new Intent(this, BusActivity.class));
+            //startActivity(new Intent(this, BusActivity.class));
+            startActivity(new Intent(this, CTATrainActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
